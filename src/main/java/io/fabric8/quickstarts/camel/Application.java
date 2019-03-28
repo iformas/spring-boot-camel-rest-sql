@@ -27,32 +27,37 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Component;
 
 @SpringBootApplication
-@ImportResource({ "classpath:spring/camel-context.xml" })
+@ImportResource({"classpath:spring/camel-context.xml"})
 public class Application extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-	@Bean
-	ServletRegistrationBean servletRegistrationBean() {
-		ServletRegistrationBean servlet = new ServletRegistrationBean(new CamelHttpTransportServlet(),
-				"/camel-rest-sql/*");
-		servlet.setName("CamelServlet");
-		return servlet;
-	}
+    @Bean
+    ServletRegistrationBean servletRegistrationBean() {
+        ServletRegistrationBean servlet = new ServletRegistrationBean(
+            new CamelHttpTransportServlet(), "/camel-rest-sql/*");
+        servlet.setName("CamelServlet");
+        return servlet;
+    }
 
-	@Component
-	class RestApi extends RouteBuilder {
+    @Component
+    class RestApi extends RouteBuilder {
 
-		@Override
-		public void configure() {
-			restConfiguration().contextPath("/camel-rest-sql").apiContextPath("/api-doc")
-					.apiProperty("api.title", "Camel REST API").apiProperty("api.version", "1.0")
-					.apiProperty("cors", "true").apiContextRouteId("doc-api").component("servlet")
-					.bindingMode(RestBindingMode.json);
+        @Override
+        public void configure() {
+            restConfiguration()
+                .contextPath("/camel-rest-sql").apiContextPath("/api-doc")
+                    .apiProperty("api.title", "Camel REST API")
+                    .apiProperty("api.version", "1.0")
+                    .apiProperty("cors", "true")
+                    .apiContextRouteId("doc-api")
+                .component("servlet")
+                .bindingMode(RestBindingMode.json);
 
-		}
-	}
+        }
+    }
 
+   
 }
