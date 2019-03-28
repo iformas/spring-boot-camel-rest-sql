@@ -17,6 +17,10 @@ endpoints:
   enabled: false
   health:
     enabled: true
+    
+  web:
+    exposure:
+      include: heapdump,liquibase,loggers,prometheus,threaddump,info,metrics,heatlh
 
 mysql:
   service:
